@@ -12,7 +12,7 @@ def count_letters(letter, string):
     return len(re.findall(letter, string))
 
 
-def is_password_valid(_range, letter, string):
+def is_password_valid_1(_range, letter, string):
     (_min, _max) = list(map(int, _range.split("-")))
 
     letter_count = count_letters(letter, string)
@@ -23,7 +23,21 @@ def is_password_valid(_range, letter, string):
     return 1
 
 
-def get_valid_passwords(file):
+def is_password_valid_2(_range, letter, string):
+    (fi, si) = list(map(int, _range.split("-")))
+    stripped_string = string.strip()
+
+    letters = [stripped_string[fi-1], stripped_string[si-1]]
+
+    matches = reduce(lambda x, y: x+1 if letter == y else x, letters, 0)
+
+    if matches == 1:
+        return 1
+    
+    return 0
+
+
+def get_valid_passwords_1(file):
     valid_passwords = 0
 
     with open(file, 'r') as passwords_file:
@@ -32,10 +46,24 @@ def get_valid_passwords(file):
         for line in lines:
             (policy, password) = line.split(":")
             (_range, letter) = policy.split(" ")
-            valid_passwords += is_password_valid(_range, letter, password)
+            valid_passwords += is_password_valid_1(_range, letter, password)
     
     return valid_passwords
-        
+    
+
+def get_valid_passwords_2(file):
+    valid_passwords = 0
+
+    with open(file, 'r') as passwords_file:
+        lines = passwords_file.readlines()
+
+        for line in lines:
+            (policy, password) = line.split(":")
+            (_range, letter) = policy.split(" ")
+            valid_passwords += is_password_valid_2(_range, letter, password)
+    
+    return valid_passwords
+
 
 if __name__ == "__main__":
     # Initialise argument parser
@@ -50,6 +78,5 @@ if __name__ == "__main__":
 
     passwords_file = args.file
 
-    valid_passwords = get_valid_passwords(passwords_file)
-
-    print("Part 1: ", valid_passwords)
+    print("Part 1: ", get_valid_passwords_1(passwords_file))
+    print("Part 2: ", get_valid_passwords_2(passwords_file))
