@@ -8,23 +8,56 @@ from functools import reduce
 import re
 
 
-def count_trees_hit_1(terrain_file):
+def count_trees_hit_2(terrain_file, slopes):
     with open(terrain_file, 'r') as terrain:
         lines = terrain.readlines()
         
         max_height = len(lines)
-        max_width = len(lines[0]) # Assumes each line is of equal length
+        max_width = len(lines[0].strip()) # Assumes each line is of equal length
 
-        x = 3
-        y = 1
+        multiplier = 1
+
+        for slope in slopes:
+            (x, y) = slope
+            
+            trees_hit = 0
+
+            while y < max_height:
+                line = lines[y].strip()
+                cell = line[x]
+            
+                if cell == "#":
+                    trees_hit += 1
+                
+                x = (x + 3) % max_width
+                y += 1
+
+            if trees_hit:
+                print(trees_hit, multiplier)
+                multiplier *= trees_hit
+
+        return multiplier
+
+
+def count_trees_hit_1(terrain_file, slope):
+    with open(terrain_file, 'r') as terrain:
+        lines = terrain.readlines()
+        
+        max_height = len(lines)
+        max_width = len(lines[0].strip()) # Assumes each line is of equal length
+
+        (x, y) = slope
         
         trees_hit = 0
 
-        while x < max_height and y < max_width:         
-            if lines[x][y] == "#":
+        while y < max_height:
+            line = lines[y].strip()
+            cell = line[x]
+        
+            if cell == "#":
                 trees_hit += 1
             
-            x += 3
+            x = (x + 3) % max_width
             y += 1
 
         return trees_hit
@@ -43,5 +76,5 @@ if __name__ == "__main__":
 
     terrain_file = args.file
 
-    print("Part 1: ", count_trees_hit_1(terrain_file))
-    # print("Part 2: ", count_trees_hit_2(passwords_file))
+    print("Part 1: ", count_trees_hit_1(terrain_file, (3,1)))
+    print("Part 2: ", count_trees_hit_2(terrain_file, [(1,1), (3,1), (5,1), (7,1), (1,2)]))
