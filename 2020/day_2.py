@@ -27,11 +27,10 @@ def is_password_valid_2(_range, letter, string):
     (fi, si) = list(map(int, _range.split("-")))
     stripped_string = string.strip()
 
-    letters = [stripped_string[fi-1], stripped_string[si-1]]
+    fi_letter = stripped_string[fi-1]
+    si_letter = stripped_string[si-1]
 
-    matches = reduce(lambda x, y: x+1 if letter == y else x, letters, 0)
-
-    if matches == 1:
+    if (letter == fi_letter) != (letter == si_letter):
         return 1
     
     return 0
