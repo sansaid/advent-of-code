@@ -12,19 +12,19 @@ def count_letters(letter, string):
     return len(re.findall(letter, string))
 
 
-def is_password_invalid(_range, letter, string):
+def is_password_valid(_range, letter, string):
     (_min, _max) = list(map(int, _range.split("-")))
 
     letter_count = count_letters(letter, string)
 
     if letter_count > _max or letter_count < _min:
-        return 1
+        return 0
     
-    return 0
+    return 1
 
 
 def get_valid_passwords(file):
-    invalid_passwords = 0
+    valid_passwords = 0
 
     with open(file, 'r') as passwords_file:
         lines = passwords_file.readlines()
@@ -32,9 +32,9 @@ def get_valid_passwords(file):
         for line in lines:
             (policy, password) = line.split(":")
             (_range, letter) = policy.split(" ")
-            invalid_passwords += is_password_invalid(_range, letter, password)
+            valid_passwords += is_password_valid(_range, letter, password)
     
-    return invalid_passwords
+    return valid_passwords
         
 
 if __name__ == "__main__":
