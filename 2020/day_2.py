@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     # Define arguments
     prog.add_argument("--file", "-f",
-            help="File containing list of expenses. Must be in CSV format with one column. Each row in the column represents one expense.")
+            help="File containing input")
 
     # Parse argument
     args = prog.parse_args()
