@@ -18,7 +18,10 @@ def count_trees_hit_2(terrain_file, slopes):
         multiplier = 1
 
         for slope in slopes:
-            (x, y) = slope
+            (x_incr, y_incr) = slope
+
+            x = x_incr
+            y = y_incr
             
             trees_hit = 0
 
@@ -29,11 +32,10 @@ def count_trees_hit_2(terrain_file, slopes):
                 if cell == "#":
                     trees_hit += 1
                 
-                x = (x + 3) % max_width
-                y += 1
+                x = (x + x_incr) % max_width
+                y += y_incr
 
             if trees_hit:
-                print(trees_hit, multiplier)
                 multiplier *= trees_hit
 
         return multiplier
